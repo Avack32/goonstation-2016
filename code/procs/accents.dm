@@ -618,3 +618,196 @@ var/list/zalgo_mid = list(
 			new_string += pick(zalgo_down)
 	
 	return new_string
+
+//Yorkshire AKA Tyke accent, wrought by Avack
+//An amalgamation of a bunch of sources:
+//http://www.yorkshiredialect.com/
+//http://www.yorkshire-dialect.org/dictionary.htm & http://www.yorkshire-dialect.org/humour/yorkshire_humour.htm
+//https://en.wikipedia.org/wiki/Yorkshire_dialect
+/proc/tyke_parse(var/datum/text_roamer/R)
+	var/new_string = ""
+	var/used = 0
+
+	switch(R.curr_char)
+
+		if("a")
+			//All of these are to represent the monophthongisation of the long E
+			if(lowertext(R.next_char) == "y")
+				new_string = "ey"
+				used = 2
+			if(lowertext(R.next_char) == "d" && lowertext(R.next_next_char) == "e")
+				new_string = "ed"
+				used = 3
+			if(lowertext(R.next_char) == "v" && lowertext(R.next_next_char) == "e")
+				new_string = "ev"
+				used = 3
+		if("A")
+			if(lowertext(R.next_char) == "y")
+				new_string = "EY"
+				used = 2
+			if(lowertext(R.next_char) == "d" && lowertext(R.next_next_char) == "e")
+				new_string = "ED"
+				used = 3
+			if(lowertext(R.next_char) == "v" && lowertext(R.next_next_char) == "e")
+				new_string = "EV"
+				used = 3
+
+		if("e")
+			//Where, there, and many words with "ea" often diphthongised
+			if(lowertext(R.next_char) == "a")
+				new_string = "eea"
+				used = 2
+		if("E")
+			if(lowertext(R.next_char) == "a")
+				new_string = "EEA"
+				used = 2
+
+		if("h","H")
+			//H-dropping is common - here, only at the start of the word, and not at the end, to allow people to quote the letter itself
+			if(R.prev_char == "" && R.next_char != "")
+				new_string = "'"
+				used = 1
+
+		if("i")
+			//Seems to be common
+			if(R.prev_char == "" && R.next_char == "")
+				new_string = "ah"
+				used = 1
+			if(R.prev_char == "" && R.next_char == "'")
+				new_string = "a"
+				used = 1
+			//Some -ight words in dialect forms of -eet or -eyt
+			if(lowertext(R.next_char) == "g" && lowertext(R.next_next_char) == "h" && lowertext(R.next_next_next_char) == "t")
+				new_string = "eet"
+				used = 4
+		if("I")
+			if(R.prev_char == "" && R.next_char == "")
+				new_string = "Ah"
+				used = 1
+			if(R.prev_char == "" && R.next_char == "'")
+				new_string = "A"
+				used = 1
+			if(lowertext(R.next_char) == "g" && lowertext(R.next_next_char) == "h" && lowertext(R.next_next_next_char) == "t")
+				new_string = "EET"
+				used = 4
+
+		if("n")
+			//As per many dialects, g dropped in -ng
+			if(lowertext(R.next_char) == "g" && R.next_next_char == "")
+				new_string = "n'"
+				used = 2
+		if("N")
+			if(lowertext(R.next_char) == "g" && R.next_next_char == "")
+				new_string = "N'"
+				used = 2
+
+
+		if("o")
+			//ou and ow -> ah, as per a tendency common to the south half of Yorkshire
+			if(lowertext(R.next_char) == "w" || lowertext(R.next_char) == "u")
+				new_string = "ah"
+				used = 2
+			//This dipthong is common in the West Riding, which I seem to be basing this on??
+			if(lowertext(R.next_char) == "o" || lowertext(R.next_char) == "a" && lowertext(R.next_next_char) == "r")
+				new_string = "ooar"
+				used = 3
+			//Coal, coat, hole, etc. pronounced with "oi" seems to be common as per dictionaries and poetry
+			if(lowertext(R.next_char) == "a")
+				new_string = "oi"
+				used = 2
+			if(lowertext(R.next_char) == "o" && (lowertext(R.next_next_char) == "t" || lowertext(R.next_next_char) == "l"))
+				new_string = "ooi"
+				used = 2
+			if(lowertext(R.next_char) == "l" && lowertext(R.next_next_char) == "e")
+				new_string = "oil"
+				used = 3
+			//Words which formally had a velar fricative (gh) may change vowels from ough -> ow
+			if(lowertext(R.next_char) == "u" && lowertext(R.next_next_char) == "g" && lowertext(R.next_next_next_char) == "h")
+				new_string = "ow"
+				used = 4
+		if("O")
+			if(lowertext(R.next_char) == "w" || lowertext(R.next_char) == "u")
+				new_string = "AH"
+				used = 2
+			if(lowertext(R.next_char) == "o" || lowertext(R.next_char) == "a" && lowertext(R.next_next_char) == "r")
+				new_string = "OOAR"
+				used = 3
+			if(lowertext(R.next_char) == "a")
+				new_string = "OI"
+				used = 2
+			if(lowertext(R.next_char) == "o" && (lowertext(R.next_next_char) == "t" || lowertext(R.next_next_char) == "l"))
+				new_string = "OOI"
+				used = 2
+			if(lowertext(R.next_char) == "l" && lowertext(R.next_next_char) == "e")
+				new_string = "OIL"
+				used = 3
+			if(lowertext(R.next_char) == "u" && lowertext(R.next_next_char) == "g" && lowertext(R.next_next_next_char) == "h")
+				new_string = "OW"
+				used = 4
+
+		if("t","T")
+			//Final stops d and t fricatives f and th often omitted at word end - only done some of the time here so that people can sometimes be almost understood, and also not done after apostrophes so they don't get doubled up
+			if(R.prev_char != "" && R.prev_char != "'" && lowertext(R.next_char) == "h" && R.next_next_char == "" && prob(50))
+				new_string = "'"
+				used = 2
+			else if(R.prev_char != "" && R.prev_char != "'" && R.next_char == "" && prob(50))
+				new_string = "'"
+				used = 1
+		if("f","F")
+			if(R.prev_char != "" && R.prev_char != "'" && lowertext(R.prev_char) != "f" && R.next_char == "" && prob(50))
+				new_string = "'"
+				used = 1
+		if("d","D")
+			if(R.prev_char != "" && R.prev_char != "'" && R.next_char == "" && prob(50))
+				new_string = "'"
+				used = 1
+
+	if(new_string == "")
+		new_string = R.curr_char
+		used = 1
+
+	var/datum/parse_result/P = new/datum/parse_result
+	P.string = new_string
+	P.chars_used = used
+	return P
+
+//Kind thanks to Cirr for making this stuff down here & letting me use it. See by /proc/yorkify for lexicon sources.
+/proc/yorkify(var/string)
+
+	var/list/tokens = splittext(string, " ")
+	var/list/modded_tokens = list()
+
+	var/regex/punct_check = regex("\\W+\\Z", "i")
+	for(var/token in tokens)
+		var/modified_token = ""
+		var/original_word = ""
+		var/punct = ""
+		var/punct_index = findtext(token, punct_check)
+		if(punct_index)
+			punct = copytext(token, punct_index)
+			original_word = copytext(token, 1, punct_index)
+		else
+			original_word = token
+
+		var/matching_token = strings("language/tyke.txt", lowertext(original_word), 1)
+		if(matching_token)
+			modified_token = replacetext(original_word, lowertext(original_word), matching_token)
+		else
+			var/datum/text_roamer/T = new/datum/text_roamer(original_word)
+			for(var/i = 0, i < length(original_word), i=i)
+				var/datum/parse_result/P = tyke_parse(T)
+				modified_token += P.string
+				i += P.chars_used
+				T.curr_char_pos = T.curr_char_pos + P.chars_used
+				T.update()
+
+		modified_token += punct
+		modded_tokens += modified_token
+
+	var/modded = jointext(modded_tokens, " ")
+	if((findtext(modded, (";" || ":")) != 1) && prob(5)) //Adding the prefixes would break radio speech, so we don't add them if there's a colon or semicolon
+		modded = pick("Ee, ","Nah then, ") + modded
+	if(prob(2))
+		modded += pick(" Bi 'eck!"," Ee ba gum!"," Gi' o'er!")
+
+	return modded
