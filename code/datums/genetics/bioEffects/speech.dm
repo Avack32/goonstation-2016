@@ -83,6 +83,27 @@
 		message = chavify(message)
 		return message
 
+/datum/bioEffect/speech/tyke
+	name = "Frontal Gyrus Alteration Type-Y"
+	desc = "Forces the language center of the subject's brain to construct sentences in the manner of a northerner."
+	id = "accent_tyke"
+	effectType = effectTypeDisability
+	isBad = 1
+	msgGain = "You feel like you're on Ilkley Moor without a hat."
+	msgLose = "The feeling of moorishness abides."
+	reclaim_fail = 10
+	lockProb = 25
+	lockedGaps = 2
+	lockedDiff = 2
+	lockedChars = list("G","C")
+	lockedTries = 3
+
+	OnSpeak(var/message)
+		if (!istext(message))
+			return ""
+		message = yorkify(message)
+		return message
+
 /datum/bioEffect/speech/swedish
 	name = "Frontal Gyrus Alteration Type-B"
 	desc = "Forces the language center of the subject's brain to construct sentences in a vaguely norse manner."
