@@ -210,6 +210,20 @@
 			owner.bioHolder.AddEffect("accent_swedish")
 		return
 
+/obj/trait/tyke
+	name = "Tyke (0) \[Language\]"
+	cleanName = "Tyke"
+	desc = "You're from Oop North in Yorkshire, and don't let anyone forget it!"
+	id = "tyke"
+	points = 0
+	isPositive = 1
+	category = "language"
+
+	onAdd(var/mob/owner)
+		if(owner.bioHolder)
+			owner.bioHolder.AddEffect("accent_tyke")
+		return
+
 /obj/trait/chav
 	name = "Chav (0) \[Language\]"
 	cleanName = "Chav"
