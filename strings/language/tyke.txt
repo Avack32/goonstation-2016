@@ -863,6 +863,7 @@ teaches@=leearns
 teaching@=leearnin'
 terrifying@=flaysome
 than@=nor
+thanks@=ta
 the@=t'
 theirself@=themsen
 theirselves@=themsens
