@@ -708,7 +708,7 @@ var/list/zalgo_mid = list(
 				new_string = "ah"
 				used = 2
 			//This dipthong is common in the West Riding, which I seem to be basing this on??
-			if(lowertext(R.next_char) == "o" || lowertext(R.next_char) == "a" && lowertext(R.next_next_char) == "r")
+			if((lowertext(R.next_char) == "o" || lowertext(R.next_char) == "a") && lowertext(R.next_next_char) == "r")
 				new_string = "ooar"
 				used = 3
 			//Coal, coat, hole, etc. pronounced with "oi" seems to be common as per dictionaries and poetry
@@ -729,7 +729,7 @@ var/list/zalgo_mid = list(
 			if(lowertext(R.next_char) == "w" || lowertext(R.next_char) == "u")
 				new_string = "AH"
 				used = 2
-			if(lowertext(R.next_char) == "o" || lowertext(R.next_char) == "a" && lowertext(R.next_next_char) == "r")
+			if((lowertext(R.next_char) == "o" || lowertext(R.next_char) == "a") && lowertext(R.next_next_char) == "r")
 				new_string = "OOAR"
 				used = 3
 			if(lowertext(R.next_char) == "a")
