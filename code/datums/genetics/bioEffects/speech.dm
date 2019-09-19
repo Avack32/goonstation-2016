@@ -90,7 +90,7 @@
 	effectType = effectTypeDisability
 	isBad = 1
 	msgGain = "You feel like you're on Ilkley Moor without a hat."
-	msgLose = "The feeling of moorishness abides."
+	msgLose = "You never want to hear a brass band again."
 	reclaim_fail = 10
 	lockProb = 25
 	lockedGaps = 2
