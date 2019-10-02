@@ -676,6 +676,10 @@ var/list/zalgo_mid = list(
 			if(R.prev_char == "" && R.next_char == "'")
 				new_string = "a"
 				used = 1
+			//i_e -> ah_e
+			if(lowertext(R.next_next_char) == "e")
+				new_string = "ah"
+				used = 1
 			//Some -ight words in dialect forms of -eet or -eyt
 			if(lowertext(R.next_char) == "g" && lowertext(R.next_next_char) == "h" && lowertext(R.next_next_next_char) == "t")
 				new_string = "eet"
@@ -686,6 +690,13 @@ var/list/zalgo_mid = list(
 				used = 1
 			if(R.prev_char == "" && R.next_char == "'")
 				new_string = "A"
+				used = 1
+			//"It" with exact capitalisation to "'T", to try and catch it sentence-initially
+			if(R.next_char == "t" && R.next_next_char == "")
+				new_string = "'T"
+				used = 2
+			if(lowertext(R.next_next_char) == "e")
+				new_string = "AH"
 				used = 1
 			if(lowertext(R.next_char) == "g" && lowertext(R.next_next_char) == "h" && lowertext(R.next_next_next_char) == "t")
 				new_string = "EET"
@@ -703,47 +714,73 @@ var/list/zalgo_mid = list(
 
 
 		if("o")
-			//ou and ow -> ah, as per a tendency common to the south half of Yorkshire
-			if(lowertext(R.next_char) == "w" || lowertext(R.next_char) == "u")
-				new_string = "ah"
-				used = 2
-			//This dipthong is common in the West Riding, which I seem to be basing this on??
-			if((lowertext(R.next_char) == "o" || lowertext(R.next_char) == "a") && lowertext(R.next_next_char) == "r")
-				new_string = "ooar"
-				used = 3
-			//Coal, coat, hole, etc. pronounced with "oi" seems to be common as per dictionaries and poetry
-			if(lowertext(R.next_char) == "a")
-				new_string = "oi"
-				used = 2
-			if(lowertext(R.next_char) == "o" && (lowertext(R.next_next_char) == "t" || lowertext(R.next_next_char) == "l"))
-				new_string = "ooi"
-				used = 2
-			if(lowertext(R.next_char) == "l" && lowertext(R.next_next_char) == "e")
-				new_string = "oil"
-				used = 3
-			//Words which formally had a velar fricative (gh) may change vowels from ough -> ow
-			if(lowertext(R.next_char) == "u" && lowertext(R.next_next_char) == "g" && lowertext(R.next_next_next_char) == "h")
-				new_string = "ow"
-				used = 4
+			switch(lowertext(R.next_char))
+				if("w")
+					//ou and ow -> ah, as per a tendency common to the south half of Yorkshire, not done before "e" here so as not to obfuscate "power", "owe"
+					if(lowertext(R.next_next_char) != "e")
+						new_string = "ah"
+						used = 2
+				if("a")
+					//This dipthong is common in the West Riding, which I seem to be basing this on??
+					if(lowertext(R.next_next_char) == "r")				
+						new_string = "ooa"
+						used = 2
+					//Coal, coat, hole, etc. pronounced with "oi" seems to be common as per dictionaries and poetry
+					else
+						new_string = "oi"
+						used = 2
+				if("o")
+					if(lowertext(R.next_next_char) == "r")				
+						new_string = "ooa"
+						used = 2
+					if(lowertext(R.next_next_char) == "t" || lowertext(R.next_next_char) == "l")
+						new_string = "ooi"
+						used = 2
+				if("l")
+					//See: oa -> oi
+					if(lowertext(R.next_next_char) == "e")
+						new_string = "oil"
+						used = 3
+				if("u")
+					//Words which formally had a velar fricative (gh) may change vowels from ough -> ow
+					if(lowertext(R.next_next_char) == "g" && lowertext(R.next_next_next_char) == "h")
+						new_string = "ow"
+						used = 4
+					else
+						new_string = "ah"
+						used = 2
 		if("O")
-			if(lowertext(R.next_char) == "w" || lowertext(R.next_char) == "u")
-				new_string = "AH"
-				used = 2
-			if((lowertext(R.next_char) == "o" || lowertext(R.next_char) == "a") && lowertext(R.next_next_char) == "r")
-				new_string = "OOAR"
-				used = 3
-			if(lowertext(R.next_char) == "a")
-				new_string = "OI"
-				used = 2
-			if(lowertext(R.next_char) == "o" && (lowertext(R.next_next_char) == "t" || lowertext(R.next_next_char) == "l"))
-				new_string = "OOI"
-				used = 2
-			if(lowertext(R.next_char) == "l" && lowertext(R.next_next_char) == "e")
-				new_string = "OIL"
-				used = 3
-			if(lowertext(R.next_char) == "u" && lowertext(R.next_next_char) == "g" && lowertext(R.next_next_next_char) == "h")
-				new_string = "OW"
-				used = 4
+			switch(lowertext(R.next_char))
+				if("w")
+					if(lowertext(R.next_next_char) != "e")
+						new_string = "AH"
+						used = 2
+				if("a")
+					if(lowertext(R.next_next_char ==) "r")				
+						new_string = "OOA"
+						used = 2
+					else
+						new_string = "OI"
+						used = 2
+				if("o")
+					if(lowertext(R.next_next_char) == "r")				
+						new_string = "OOA"
+						used = 2
+					if(lowertext(R.next_next_char) == "t" || lowertext(R.next_next_char) == "l")
+						new_string = "OOI"
+						used = 2
+				if("l")
+					//See: oa -> oi
+					if(lowertext(R.next_next_char) == "e")
+						new_string = "OIL"
+						used = 3
+				if("u")
+					if(lowertext(R.next_next_char) == "g" && lowertext(R.next_next_next_char) == "h")
+						new_string = "OW"
+						used = 4
+					else
+						new_string = "AH"
+						used = 2
 
 		if("t","T")
 			//Final stops d and t fricatives f and th often omitted at word end - only done some of the time here so that people can sometimes be almost understood, and also not done after apostrophes so they don't get doubled up
@@ -805,7 +842,7 @@ var/list/zalgo_mid = list(
 		modded_tokens += modified_token
 
 	var/modded = jointext(modded_tokens, " ")
-	if((findtext(modded, (";" || ":")) != 1) && prob(5)) //Adding the prefixes would break radio speech, so we don't add them if there's a colon or semicolon
+	if((findtext(modded, (";") != 1) && (findtext(modded, (":") != 1) && prob(5)) //Adding the prefixes would break radio speech, so we don't add them if there's a colon or semicolon
 		modded = pick("Ee, ","Nah then, ") + modded
 	if(prob(2))
 		modded += pick(" Bi 'eck!"," Ee ba gum!"," Gi' o'er!")
